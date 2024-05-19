@@ -1,0 +1,18 @@
+version: "3.3"
+
+services:
+  api-codeforces:
+    build: ./api-codeforces
+    image: mukanjy0/api-codeforces
+    ports:
+      - 8000:8000
+  api-atcoder:
+    build: ./api-atcoder
+    image: mukanjy0/api-atcoder # insert user or I could upload image
+    ports:
+      - 8001:8001
+  api-topcoder:
+    build: ./api-topcoder
+    image: mukanjy0/api-topcoder # insert user or I could upload image
+    ports:
+      - 8002:8002
