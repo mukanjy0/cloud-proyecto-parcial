@@ -1,11 +1,21 @@
 from fastapi import FastAPI
 import mysql.connector
 import schemas
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=['*'],
+    allow_headers=['*']
+)
+
 config = {
-    'host': 'host', # must change
+    'host': '3.221.35.104', # must change
     'port': '8005',
     'user': 'root',
     'password': 'utec',
@@ -26,7 +36,7 @@ def get_employees():
 def get_employee(handle: str):
     conn = mysql.connector.connect(**config)  
     cursor = conn.cursor()
-    cursor.execute(f"SELECT * FROM users WHERE handle = {handle}")
+    cursor.execute(f"SELECT * FROM users WHERE handle = '{handle}'")
     result = cursor.fetchone()
     conn.close()
     return {"user": result}
@@ -37,14 +47,10 @@ def add_user(item:schemas.User):
     cursor = conn.cursor()
     sql = """
             INSERT INTO users (
-                handle, email, firstName, lastName, country, city, organization, contribution,
-                rank, rating, maxRank, maxRating, registrationTimeSeconds, avatar, titlePhoto
-            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                handle, email, firstName, lastName, country, city, `rank`  , rating ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
         """
     val = (
-            user.handle, user.email, user.firstName, user.lastName, user.country, user.city,
-            user.organization, user.contribution, user.rank, user.rating, user.maxRank, user.maxRating,
-            user.registrationTimeSeconds, user.avatar, user.titlePhoto
+            item.handle, item.email, item.firstName, item.lastName, item.country, item.city, item.rank, item.rating
         )
     cursor.execute(sql, val)
     conn.commit()
@@ -56,15 +62,9 @@ def update_employee(handle:str, item:schemas.User):
     conn = mysql.connector.connect(**config)  
     cursor = conn.cursor()
     sql = """
-            UPDATE users set handle=%s, email=%s, firstName=%s, lastName=%s, country=%s, city=%s, organization=%s, contribution=%s,
-                rank=%s, rating=%s, maxRank=%s, maxRating=%s, registrationTimeSeconds=%s, avatar=%s, titlePhoto=%s
-                where handle=%s
+            UPDATE users set email=%s, firstName=%s, lastName=%s, country=%s, city=%s, `rank`=%s, rating=%s where handle=%s
         """
-    val = (
-            user.handle, user.email, user.firstName, user.lastName, user.country, user.city,
-            user.organization, user.contribution, user.rank, user.rating, user.maxRank, user.maxRating,
-            user.registrationTimeSeconds, user.avatar, user.titlePhoto
-        )
+    val = (item.email, item.firstName, item.lastName, item.country, item.city, item.rank, item.rating, item.handle)
     cursor.execute(sql, val)
     conn.commit()
     conn.close()
@@ -74,7 +74,7 @@ def update_employee(handle:str, item:schemas.User):
 def delete_employee(handle: str):
     conn = mysql.connector.connect(**config)  
     cursor = conn.cursor()
-    cursor.execute(f"DELETE FROM users WHERE handle = {handle}")
+    cursor.execute(f"DELETE FROM users WHERE handle = '{handle}'")
     conn.commit()
     conn.close()
     return {"message": "User deleted successfully"}
