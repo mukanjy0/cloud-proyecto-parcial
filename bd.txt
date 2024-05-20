@@ -1,0 +1,62 @@
+CREATE DATABASE proyecto_parcial;
+USE proyecto_parcial;
+CREATE SCHEMA codeforces;
+CREATE SCHEMA atcoder;
+CREATE SCHEMA topcoder;
+
+USE codeforces;
+CREATE TABLE user(
+    handle VARCHAR(255) PRIMARY KEY,
+    email VARCHAR(255),
+    firstName VARCHAR(255),
+    lastName VARCHAR(255),
+    country VARCHAR(255),
+    city VARCHAR(255),
+    rank VARCHAR(255),
+    rating INT,
+);
+
+CREATE TABLE submission (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    `status` VARCHAR(255),
+    problem VARCHAR(255),
+    url_problem VARCHAR(255),
+    user_handle VARCHAR(255),
+    FOREIGN KEY (user_handle) REFERENCES user(handle)
+);
+
+USE atcoder;
+CREATE TABLE user(
+    handle VARCHAR(255) PRIMARY KEY,
+    email VARCHAR(255),
+    rank INT,
+    rating INT,
+);
+
+CREATE TABLE submission (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    `status` VARCHAR(255),
+    problem VARCHAR(255),
+    url_problem VARCHAR(255),
+    user_handle VARCHAR(255),
+    FOREIGN KEY (user_handle) REFERENCES user(handle)
+);
+
+
+USE topcoder;
+CREATE TABLE user ( 
+    handle VARCHAR(100) PRIMARY KEY,
+    firstName VARCHAR(100),
+    lastName VARCHAR(100),
+    city VARCHAR(100),
+    email VARCHAR(100)
+);
+
+CREATE TABLE submission (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    `status` VARCHAR(255),
+    problem VARCHAR(255),
+    url_problem VARCHAR(255),
+    user_handle VARCHAR(100),
+    FOREIGN KEY (user_handle) REFERENCES user(handle)
+);
