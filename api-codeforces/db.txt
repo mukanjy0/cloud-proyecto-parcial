@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS bd_api_employees;
+DROP DATABASE IF EXISTS codeforces;
 CREATE DATABASE codeforces CHARSET utf8mb4;
 USE codeforces;
 
@@ -9,13 +9,6 @@ CREATE TABLE users (
     lastName VARCHAR(255),
     country VARCHAR(255),
     city VARCHAR(255),
-    organization VARCHAR(255),
-    contribution INT,
-    rank VARCHAR(255),
+    `rank` VARCHAR(255),
     rating INT,
-    maxRank VARCHAR(255),
-    maxRating INT,
-    registrationTimeSeconds INT,
-    avatar VARCHAR(255),
-    titlePhoto VARCHAR(255)
 );

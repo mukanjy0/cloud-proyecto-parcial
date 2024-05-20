@@ -1,0 +1,13 @@
+DROP DATABASE IF EXISTS bd_api_topcoder_users;
+CREATE DATABASE bd_api_topcoder_users CHARSET utf8mb4;
+USE bd_api_topcoder_users;
+
+CREATE TABLE topcoder_users (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    apellidos VARCHAR(100) NOT NULL,
+    ciudad VARCHAR(100) NOT NULL,
+    correo VARCHAR(100) NOT NULL,
+    tc_name VARCHAR(100) NOT NULL,
+    PRIMARY KEY (id)
+);
