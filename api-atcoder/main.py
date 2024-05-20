@@ -16,10 +16,10 @@ app.add_middleware(
 )
 
 # Configuración de la base de datos
-host_name = "3.221.35.104"
-port_number = "8005"
+host_name = "db.ckclbmy02ks1.us-east-1.rds.amazonaws.com"
+port_number = "3306"
 user_name = "root"
-password_db = "utec"
+password_db = "utecutec"
 database_name = "atcoder"
 
 # Definición del esquema User

@@ -15,16 +15,16 @@ app.add_middleware(
 )
 
 config = {
-    'host': '3.221.35.104', # must change
-    'port': '8005',
+    'host': 'db.ckclbmy02ks1.us-east-1.rds.amazonaws.com', # must change
+    'port': '3306',
     'user': 'root',
-    'password': 'utec',
+    'password': 'utecutec',
     'database': 'codeforces'
 }
 
 
 @app.get("/users")
-def get_employees():
+def get_users():
     conn = mysql.connector.connect(**config)  
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM users")
@@ -33,7 +33,7 @@ def get_employees():
     return {"users": result}
 
 @app.get("/users/{handle}")
-def get_employee(handle: str):
+def get_user(handle: str):
     conn = mysql.connector.connect(**config)  
     cursor = conn.cursor()
     cursor.execute(f"SELECT * FROM users WHERE handle = '{handle}'")
@@ -58,7 +58,7 @@ def add_user(item:schemas.User):
     return {"message": "User added successfully"}
 
 @app.put("/users/{handle}")
-def update_employee(handle:str, item:schemas.User):
+def update_user(handle:str, item:schemas.User):
     conn = mysql.connector.connect(**config)  
     cursor = conn.cursor()
     sql = """
@@ -71,7 +71,7 @@ def update_employee(handle:str, item:schemas.User):
     return {"message": "User modified successfully"}
 
 @app.delete("/users/{handle}")
-def delete_employee(handle: str):
+def delete_user(handle: str):
     conn = mysql.connector.connect(**config)  
     cursor = conn.cursor()
     cursor.execute(f"DELETE FROM users WHERE handle = '{handle}'")
