@@ -145,7 +145,7 @@ export function Topcoder(){
                                                     <i className="fa-solid fa-edit" data-bs-toggle='modal' data-bs-target='#modalProducts'></i>
                                                 </button>
                                                 &nbsp;
-                                                <button onClick={() => handleDelete(user.id)} className="btn btn-danger">
+                                                <button onClick={() => handleDelete(user.handle)} className="btn btn-danger">
                                                     <i className="fa-solid fa-trash"></i>
                                                 </button>
                                             </td>

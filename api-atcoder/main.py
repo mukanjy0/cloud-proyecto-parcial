@@ -91,7 +91,6 @@ def add_user(user: User):
     except mysql.connector.Error as err:
         raise HTTPException(status_code=500, detail=f"Error: {err}")
 
-# Modificar un usuario
 @app.put("/users/{handle}")
 def update_employee(handle:str, item:User):        
         conn = mysql.connector.connect(
@@ -103,9 +102,9 @@ def update_employee(handle:str, item:User):
         )
         cursor = conn.cursor()
         sql = """
-            UPDATE user set handle=%s, email=%s, `rank`=%s, rating=%s  where handle=%s """
+            UPDATE user set email=%s, `rank`=%s, rating=%s  where handle=%s """
         val = (
-            item.handle, item.email, item.rank, item.rating
+             item.email, item.rank, item.rating, item.handle,
         )
         cursor.execute(sql, val)
         conn.commit()

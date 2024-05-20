@@ -1,9 +1,9 @@
 from pydantic import BaseModel
 class Item (BaseModel):
-    name : str
-    apellidos : str
-    ciudad : str
-    correo : str
-    tc_name : str
+    handle : str
+    firstName : str
+    lastName : str
+    city : str
+    email : str
     
     

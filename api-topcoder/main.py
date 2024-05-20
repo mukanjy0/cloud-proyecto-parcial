@@ -17,7 +17,7 @@ host_name = '3.221.35.104'
 port_number = '8005'
 user_name = 'root'
 password_db = 'utec'
-database_name = 'bd_api_topcoder_users'
+database_name = 'topcoder'
 
 
 # GET USERS
@@ -58,28 +58,27 @@ def add_topcoder_users(item:schemas.Item):
     return {"message": "User added successfully"}
 
 # Modify an USER
-@app.put("/users/{id}")
-def update_topcoder_users(id:int, item:schemas.Item):
+@app.put("/users/{handle}")
+def update_topcoder_users(handle:str, item:schemas.Item):
     mydb = mysql.connector.connect(host=host_name, port=port_number, user=user_name, password=password_db, database=database_name)  
-    handle = item.handle
     firstName = item.firstName
     lastName = item.lastName
     city = item.city
     email = item.email
     cursor = mydb.cursor()
-    sql = "UPDATE user set name=%s, apellidos=%s, ciudad=%s, correo=%s , tc_name=%s  where id=%s"
-    val = (handle, firstName, lastName, city, email, id)
+    sql = "UPDATE user set firstName=%s, lastName=%s, city=%s, email=%s where handle=%s"
+    val = (firstName, lastName, city, email, handle)
     cursor.execute(sql, val)
     mydb.commit()
     mydb.close()
     return {"message": "User modified successfully"}
 
 # Delete an employee by ID
-@app.delete("/users/{id}")
-def delete_topcoder_users(id: int):
+@app.delete("/users/{handle}")
+def delete_topcoder_users(handle: str):
     mydb = mysql.connector.connect(host=host_name, port=port_number, user=user_name, password=password_db, database=database_name)  
     cursor = mydb.cursor()
-    cursor.execute(f"DELETE FROM user WHERE id = {id}")
+    cursor.execute(f"DELETE FROM user WHERE handle = '{handle}'")
     mydb.commit()
     mydb.close()
     return {"message": "User deleted successfully"}
