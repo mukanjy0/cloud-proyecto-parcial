@@ -5,7 +5,7 @@ import { FaUser, FaCity, FaEnvelope } from "react-icons/fa";
 import Swal from "sweetalert2";
 
 export function Codeforces() {
-    const url = 'http://127.0.0.1:8000/users';
+    const url = 'http://lb-project-463274464.us-east-1.elb.amazonaws.com:8000/users';
     const [tcUsers, setTcUsers] = useState([]);
     const [user, setUser] = useState({
         handle: "",
