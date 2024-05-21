@@ -1,17 +1,15 @@
-FROM node:21
+FROM node:latest
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json yarn.lock ./
 
 RUN npm install --legacy-peer-deps
-RUN apt-get update && apt-get install python3
 
 COPY . .
 
 RUN npm run build
-RUN cd ./dist
 
 EXPOSE 3000
 
-CMD ["python3", "-m", "http.server","3000"]
+CMD ["npx", "serve", "-s","dist"]
