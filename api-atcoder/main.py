@@ -4,7 +4,7 @@ from pydantic import BaseModel
 import mysql.connector
 from typing import List, Dict, Any
 
-app = FastAPI()
+app = FastAPI(title="Atcoder")
 
 # Configuración de CORS para permitir todos los orígenes
 app.add_middleware(

@@ -4,7 +4,7 @@ import schemas
 from fastapi.middleware.cors import CORSMiddleware
 
 
-app = FastAPI()
+app = FastAPI(title="Codeforces")
 
 app.add_middleware(
     CORSMiddleware,
