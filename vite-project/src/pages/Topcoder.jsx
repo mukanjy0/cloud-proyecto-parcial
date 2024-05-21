@@ -5,7 +5,7 @@ import { FaUser, FaCity, FaEnvelope, FaTag } from "react-icons/fa";
 import Swal from "sweetalert2";
 
 export function Topcoder(){
-    const url = 'http://127.0.0.1:8000/users';
+    const url = 'http://127.0.0.1:8002/users';
     const [tcUsers, setTcUsers] = useState([]);
     const [user, setUser] = useState({
         handle: "",
