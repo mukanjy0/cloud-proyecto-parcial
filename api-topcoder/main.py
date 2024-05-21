@@ -40,7 +40,7 @@ def get_topcoder_users():
 def get_topcoder_users(handle: str):
     mydb = mysql.connector.connect(host = host_name, port = port_number, user = user_name, password = password_db, database = database_name)
     cursor = mydb.cursor()
-    cursor.execute(f"SELECT * FROM user WHERE id = '{handle}'")
+    cursor.execute(f"SELECT * FROM user WHERE handle = '{handle}'")
     result = cursor.fetchone()
     mydb.close()
     return {"users": result}

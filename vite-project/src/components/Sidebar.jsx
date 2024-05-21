@@ -6,6 +6,8 @@ import { IoHome } from "react-icons/io5";
 import { FaCode } from "react-icons/fa";
 import { SiCodeforces } from "react-icons/si";
 import { SiTopcoder } from "react-icons/si";
+import { FaSearch } from "react-icons/fa";
+import { GoFileSubmodule } from "react-icons/go";
 import {Link} from "react-router-dom";
 
 export function Sidebar({sidebarOpen, setSidebarOpen}){
@@ -61,7 +63,18 @@ const linksArray=[
         label: "Topcoder",
         icon: <SiTopcoder/>,
         to : "/Topcoder"
+    },
+    {
+        label: "Search",
+        icon: <FaSearch/>,
+        to: "/Search"
+    },
+    {
+        label: "Submission",
+        icon: <GoFileSubmodule />,
+        to: "/Submission"
     }
+
 ]
 
 
