@@ -8,8 +8,8 @@ CREATE TABLE user(
     lastName VARCHAR(100),
     country VARCHAR(100),
     city VARCHAR(100),
-    rank VARCHAR(30),
-    rating INT,
+    `rank` VARCHAR(30),
+    rating INT
 );
 
 CREATE TABLE submission (
@@ -27,8 +27,8 @@ USE atcoder;
 CREATE TABLE user(
     handle VARCHAR(63) PRIMARY KEY,
     email VARCHAR(255),
-    rank INT,
-    rating INT,
+    `rank` INT,
+    rating INT
 );
 
 CREATE TABLE submission (
