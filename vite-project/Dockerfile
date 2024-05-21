@@ -1,11 +1,11 @@
-FROM node:21-alpine
+FROM node:21
 
 WORKDIR /app
 
 COPY package*.json ./
 
 RUN npm install --legacy-peer-deps
-RUN apt update && apt install python3
+RUN apt-get update && apt-get install python3
 
 COPY . .
 
