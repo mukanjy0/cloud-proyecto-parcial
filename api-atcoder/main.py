@@ -29,6 +29,11 @@ class User(BaseModel):
     rank: int
     rating: int
 
+# Health Check
+@app.get("/")
+def get_success():
+    return {"message": "success"}
+
 # Obtener todos los usuarios
 @app.get("/users", response_model=List[User])
 def get_users():

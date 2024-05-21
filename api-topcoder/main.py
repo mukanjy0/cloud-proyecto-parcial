@@ -20,6 +20,11 @@ password_db = 'utecutec'
 database_name = 'topcoder'
 
 
+# Health Check
+@app.get("/")
+def get_success():
+    return {"message": "success"}
+
 # GET USERS
 @app.get('/users')
 def get_topcoder_users():

@@ -23,6 +23,11 @@ config = {
 }
 
 
+# Health Check
+@app.get("/")
+def get_success():
+    return {"message": "success"}
+
 @app.get("/users")
 def get_users():
     conn = mysql.connector.connect(**config)  
