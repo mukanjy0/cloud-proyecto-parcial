@@ -14,11 +14,11 @@ class Submission(BaseModel):
     id: int
     status: str
     problem: str
-    problem_url: str
+    url_problem: str
     user_handle: str
 
 class SubmissionCreate(BaseModel):
     status: str
     problem: str
-    problem_url: str
+    url_problem: str
     user_handle: str
