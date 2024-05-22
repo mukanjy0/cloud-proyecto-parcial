@@ -16,10 +16,10 @@ app.add_middleware(
 )
 
 # Configuración de la base de datos
-host_name = "db.ckclbmy02ks1.us-east-1.rds.amazonaws.com"
-port_number = "3306"
-user_name = "root"
-password_db = "utecutec"
+host_name = '3.221.35.104'  
+port_number = '8005'
+user_name = 'root'
+password_db = 'utec'
 database_name = "atcoder"
 
 # Definición del esquema User
@@ -28,20 +28,19 @@ class User(BaseModel):
     email: str
     rank: int
     rating: int
-
+    
 class Submission(BaseModel):
     id: int
     status: str
     problem: str
-    problem_url: str
+    url_problem: str
     user_handle: str
 
 class SubmissionCreate(BaseModel):
     status: str
     problem: str
-    problem_url: str
+    url_problem: str
     user_handle: str
-
 
 # Health Check
 @app.get("/")
@@ -88,15 +87,6 @@ def get_user(handle: str):
             raise HTTPException(status_code=404, detail="User not found")
     except mysql.connector.Error as err:
         raise HTTPException(status_code=500, detail=f"Error: {err}")
-
-@app.get("/users/{handle}/submissions")
-def get_user(handle: str):
-    conn = mysql.connector.connect(**config)  
-    cursor = conn.cursor()
-    cursor.execute(f"SELECT * FROM submissions WHERE user_handle = '{handle}'")
-    result = cursor.fetchall()
-    conn.close()
-    return {"submissions": result}
 
 # Añadir un nuevo usuario
 @app.post("/users", response_model=Dict[str, Any])
@@ -154,9 +144,23 @@ def delete_employee(handle: str):
         conn.close()
         return {"message": "User deleted successfully"}
     
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
+    
+@app.get("/users/{handle}/submissions")
+def get_user(handle: str):
+    conn = mysql.connector.connect(
+            host=host_name,
+            port=port_number,
+            user=user_name,
+            password=password_db,
+            database=database_name
+    )
+    
+    cursor = conn.cursor()
+    cursor.execute(f"SELECT * FROM submission WHERE user_handle = '{handle}'")
+    result = cursor.fetchall()
+    conn.close()
+    return {"submissions": result}
+
 
 # ==================
 # |  /submissions  |
@@ -164,54 +168,94 @@ if __name__ == "__main__":
 
 @app.get("/submissions")
 def get_submissions():
-    conn = mysql.connector.connect(**config)  
+    conn = mysql.connector.connect(
+            host=host_name,
+            port=port_number,
+            user=user_name,
+            password=password_db,
+            database=database_name
+    )
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM submissions")
+    cursor.execute("SELECT * FROM submission")
     result = cursor.fetchall()
     conn.close()
     return {"submissions": result}
 
 @app.get("/submissions/{id}")
 def get_submission(id: int):
-    conn = mysql.connector.connect(**config)  
+    conn = mysql.connector.connect(
+            host=host_name,
+            port=port_number,
+            user=user_name,
+            password=password_db,
+            database=database_name
+    )  
     cursor = conn.cursor()
-    cursor.execute(f"SELECT * FROM submissions WHERE id = '{id}'")
+    cursor.execute(f"SELECT * FROM submission WHERE id = '{id}'")
     result = cursor.fetchone()
     conn.close()
     return {"submission": result}
 
 @app.post("/submissions")
-def add_submission(submission: schemas.SubmissionCreate):
-    conn = mysql.connector.connect(**config)  
-    cursor = conn.cursor()
-    sql = """
-            INSERT INTO submissions (
-                `status`, problem, problem_url, user_handle) VALUES (%s, %s, %s, %s, %s)
+def add_submission(submission: SubmissionCreate):
+    try:
+        conn = mysql.connector.connect(
+            host=host_name,
+            port=port_number,
+            user=user_name,
+            password=password_db,
+            database=database_name
+        )
+        cursor = conn.cursor()
+        sql = """
+            INSERT INTO submission (
+                `status`, problem, url_problem, user_handle
+            ) VALUES (%s, %s, %s, %s)
         """
-    val = tuple(vars(submission).values)
-    cursor.execute(sql, val)
-    conn.commit()
-    conn.close()
-    return {"message": "Submission added successfully"}
+        val = (submission.status, submission.problem, submission.url_problem, submission.user_handle)
+        cursor.execute(sql, val)
+        conn.commit()
+        conn.close()
+        return {"message": "Submission added successfully"}
+    except mysql.connector.Error as err:
+        raise HTTPException(status_code=500, detail=f"Error: {err}")
 
 @app.put("/submissions/{id}")
-def update_submission(id:int, submission: schemas.Submission):
-    conn = mysql.connector.connect(**config)  
-    cursor = conn.cursor()
-    sql = """
-            UPDATE submissions SET `status`=%s, problem=%s, problem_url=%s, user_handle=%s where id=%s
+def update_submission(id: int, submission: SubmissionCreate):
+    try:
+        conn = mysql.connector.connect(
+            host=host_name,
+            port=port_number,
+            user=user_name,
+            password=password_db,
+            database=database_name
+        )
+        cursor = conn.cursor()
+        sql = """
+            UPDATE submission SET `status`=%s, problem=%s, url_problem=%s, user_handle=%s WHERE id=%s
         """
-    val = tuple(vars(submission).values) + (id)
-    cursor.execute(sql, val)
-    conn.commit()
-    conn.close()
-    return {"message": "Submission modified successfully"}
+        val = (submission.status, submission.problem, submission.url_problem, submission.user_handle, id)
+        cursor.execute(sql, val)
+        conn.commit()
+        conn.close()
+        return {"message": "Submission modified successfully"}
+    except mysql.connector.Error as err:
+        raise HTTPException(status_code=500, detail=f"Error: {err}")
+
 
 @app.delete("/submissions/{id}")
 def delete_submission(id: int):
-    conn = mysql.connector.connect(**config)  
+    conn = mysql.connector.connect(
+            host=host_name,
+            port=port_number,
+            user=user_name,
+            password=password_db,
+            database=database_name
+    ) 
     cursor = conn.cursor()
-    cursor.execute(f"DELETE FROM submissions WHERE id = '{id}'")
+    cursor.execute(f"DELETE FROM submission WHERE id = '{id}'")
     conn.commit()
     conn.close()
     return {"message": "Submission deleted successfully"}
+    
+    
