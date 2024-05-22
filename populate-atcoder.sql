@@ -1,4 +1,4 @@
-INSERT INTO users (handle, email, rank, rating) VALUES
+INSERT INTO user (handle, email, rank, rating) VALUES
 ('tourist', 'tourist@protonmail.com', 'legendary grandmaster', 3979),
 ('jiangly', 'jiangly@protonmail.com', 'legendary grandmaster', 3859),
 ('Radewoosh', 'Radewoosh@protonmail.com', 'legendary grandmaster', 3759),
