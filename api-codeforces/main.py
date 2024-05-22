@@ -14,10 +14,11 @@ app.add_middleware(
     allow_headers=['*']
 )
 
+
 config = {
     
     'host' :'db.ckclbmy02ks1.us-east-1.rds.amazonaws.com',  
-    'port' : '3306',
+    'port' :  '3306',
     'user' : 'root',
     'password' : 'utecutec',
     'database': 'codeforces'
