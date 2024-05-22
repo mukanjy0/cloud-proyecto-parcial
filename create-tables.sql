@@ -16,7 +16,7 @@ CREATE TABLE submission (
     id INT AUTO_INCREMENT PRIMARY KEY,
     `status` VARCHAR(3),
     problem VARCHAR(255),
-    url_problem VARCHAR(255),
+    problem_url VARCHAR(255),
     user_handle VARCHAR(63),
     FOREIGN KEY (user_handle) REFERENCES user(handle)
 );
@@ -35,7 +35,7 @@ CREATE TABLE submission (
     id INT AUTO_INCREMENT PRIMARY KEY,
     `status` VARCHAR(3),
     problem VARCHAR(255),
-    url_problem VARCHAR(255),
+    problem_url VARCHAR(255),
     user_handle VARCHAR(63),
     FOREIGN KEY (user_handle) REFERENCES user(handle)
 );
@@ -56,7 +56,7 @@ CREATE TABLE submission (
     id INT AUTO_INCREMENT PRIMARY KEY,
     `status` VARCHAR(3),
     problem VARCHAR(255),
-    url_problem VARCHAR(255),
+    problem_url VARCHAR(255),
     user_handle VARCHAR(63),
     FOREIGN KEY (user_handle) REFERENCES user(handle)
 );
