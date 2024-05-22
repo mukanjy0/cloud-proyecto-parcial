@@ -19,7 +19,7 @@ app.add_middleware(
 host_name = 'db.ckclbmy02ks1.us-east-1.rds.amazonaws.com:3306'  
 port_number = '3306'
 user_name = 'root'
-password_db = 'utec'
+password_db = 'utecutec'
 database_name = "atcoder"
 
 # Definición del esquema User

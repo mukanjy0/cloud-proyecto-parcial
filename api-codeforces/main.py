@@ -125,7 +125,7 @@ def add_submission(submission: schemas.SubmissionCreate):
     cursor = conn.cursor()
     sql = """
             INSERT INTO submissions (
-                `status`, problem, problem_url, user_handle) VALUES (%s, %s, %s, %s, %s)
+                `status`, problem, url_problem, user_handle) VALUES (%s, %s, %s, %s, %s)
         """
     val = tuple(vars(submission).values)
     cursor.execute(sql, val)
@@ -138,7 +138,7 @@ def update_submission(id:int, submission: schemas.Submission):
     conn = mysql.connector.connect(**config)  
     cursor = conn.cursor()
     sql = """
-            UPDATE submissions SET `status`=%s, problem=%s, problem_url=%s, user_handle=%s where id=%s
+            UPDATE submissions SET `status`=%s, problem=%s, url_problem=%s, user_handle=%s where id=%s
         """
     val = tuple(vars(submission).values) + (id)
     cursor.execute(sql, val)
