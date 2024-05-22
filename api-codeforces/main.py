@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 import mysql.connector
 import schemas
 from fastapi.middleware.cors import CORSMiddleware
@@ -15,11 +15,10 @@ app.add_middleware(
 )
 
 config = {
-    
-    'host' :'3.221.35.104',  
-    'port' : '8005',
-    'user' : 'root',
-    'password' : 'utec',
+    'host': 'db.ckclbmy02ks1.us-east-1.rds.amazonaws.com', # must change
+    'port': '3306',
+    'user': 'root',
+    'password': 'utecutec',
     'database': 'codeforces'
 }
 
@@ -28,6 +27,10 @@ config = {
 @app.get("/")
 def get_success():
     return {"message": "success"}
+
+# ============
+# |  /users  |
+# ============
 
 @app.get("/users")
 def get_users():
@@ -47,13 +50,22 @@ def get_user(handle: str):
     conn.close()
     return {"user": result}
 
+@app.get("/users/{handle}/submissions")
+def get_user(handle: str):
+    conn = mysql.connector.connect(**config)  
+    cursor = conn.cursor()
+    cursor.execute(f"SELECT * FROM submissions WHERE user_handle = '{handle}'")
+    result = cursor.fetchall()
+    conn.close()
+    return {"submissions": result}
+
 @app.post("/users")
 def add_user(item:schemas.User):
     conn = mysql.connector.connect(**config)  
     cursor = conn.cursor()
     sql = """
             INSERT INTO users (
-                handle, email, firstName, lastName, country, city, `rank`  , rating ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                handle, email, firstName, lastName, country, city, `rank`, rating ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
         """
     val = (
             item.handle, item.email, item.firstName, item.lastName, item.country, item.city, item.rank, item.rating
@@ -85,16 +97,6 @@ def delete_user(handle: str):
     conn.close()
     return {"message": "User deleted successfully"}
 
-@app.get("/users/{handle}/submissions")
-def get_user(handle: str):
-    conn = mysql.connector.connect(**config)  
-    cursor = conn.cursor()
-    cursor.execute(f"SELECT * FROM submission WHERE user_handle = '{handle}'")
-    result = cursor.fetchall()
-    conn.close()
-    return {"submissions": result}
-
-
 # ==================
 # |  /submissions  |
 # ==================
@@ -103,7 +105,7 @@ def get_user(handle: str):
 def get_submissions():
     conn = mysql.connector.connect(**config)  
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM submission")
+    cursor.execute("SELECT * FROM submissions")
     result = cursor.fetchall()
     conn.close()
     return {"submissions": result}
@@ -112,50 +114,43 @@ def get_submissions():
 def get_submission(id: int):
     conn = mysql.connector.connect(**config)  
     cursor = conn.cursor()
-    cursor.execute(f"SELECT * FROM submission WHERE id = '{id}'")
+    cursor.execute(f"SELECT * FROM submissions WHERE id = '{id}'")
     result = cursor.fetchone()
     conn.close()
     return {"submission": result}
 
 @app.post("/submissions")
 def add_submission(submission: schemas.SubmissionCreate):
-    try:
-        conn = mysql.connector.connect(**config)
-        cursor = conn.cursor()
-        sql = """
-            INSERT INTO submission (
-                `status`, problem, url_problem, user_handle
-            ) VALUES (%s, %s, %s, %s)
+    conn = mysql.connector.connect(**config)  
+    cursor = conn.cursor()
+    sql = """
+            INSERT INTO submissions (
+                `status`, problem, problem_url, user_handle) VALUES (%s, %s, %s, %s, %s)
         """
-        val = (submission.status, submission.problem, submission.url_problem, submission.user_handle)
-        cursor.execute(sql, val)
-        conn.commit()
-        conn.close()
-        return {"message": "Submission added successfully"}
-    except mysql.connector.Error as err:
-        raise HTTPException(status_code=500, detail=f"Error: {err}")
+    val = tuple(vars(submission).values)
+    cursor.execute(sql, val)
+    conn.commit()
+    conn.close()
+    return {"message": "Submission added successfully"}
 
 @app.put("/submissions/{id}")
-def update_submission(id: int, submission: schemas.SubmissionCreate):
-    try:
-        conn = mysql.connector.connect(**config)
-        cursor = conn.cursor()
-        sql = """
-            UPDATE submission SET `status`=%s, problem=%s, url_problem=%s, user_handle=%s WHERE id=%s
+def update_submission(id:int, submission: schemas.Submission):
+    conn = mysql.connector.connect(**config)  
+    cursor = conn.cursor()
+    sql = """
+            UPDATE submissions SET `status`=%s, problem=%s, problem_url=%s, user_handle=%s where id=%s
         """
-        val = (submission.status, submission.problem, submission.url_problem, submission.user_handle, id)
-        cursor.execute(sql, val)
-        conn.commit()
-        conn.close()
-        return {"message": "Submission modified successfully"}
-    except mysql.connector.Error as err:
-        raise HTTPException(status_code=500, detail=f"Error: {err}")
+    val = tuple(vars(submission).values) + (id)
+    cursor.execute(sql, val)
+    conn.commit()
+    conn.close()
+    return {"message": "Submission modified successfully"}
 
 @app.delete("/submissions/{id}")
 def delete_submission(id: int):
     conn = mysql.connector.connect(**config)  
     cursor = conn.cursor()
-    cursor.execute(f"DELETE FROM submission WHERE id = '{id}'")
+    cursor.execute(f"DELETE FROM submissions WHERE id = '{id}'")
     conn.commit()
     conn.close()
     return {"message": "Submission deleted successfully"}
