@@ -15,26 +15,42 @@ export function Search() {
 
     const searchUser = async () => {
         try {
-            const [atcoderRes, codeforcesRes, topcoderRes] = await Promise.all([
-                axios.get(`http://lb-project-463274464.us-east-1.elb.amazonaws.com:8001/users/${handle}`),
-                axios.get(`http://lb-project-463274464.us-east-1.elb.amazonaws.com:8000/users/${handle}`),
-                axios.get(`http://lb-project-463274464.us-east-1.elb.amazonaws.com:8002/users/${handle}`)
-            ]);
-
+            let atcoderRes, codeforcesRes, topcoderRes;
+            
+            try {
+                atcoderRes = await axios.get(`http://lb-project-463274464.us-east-1.elb.amazonaws.com:8001/users/${handle}`);
+            } catch (atcoderError) {
+                atcoderRes = { data: null }; 
+            }
+    
+            try {
+                codeforcesRes = await axios.get(`http://lb-project-463274464.us-east-1.elb.amazonaws.com:8000/users/${handle}`);
+            } catch (codeforcesError) {
+                codeforcesRes = { data: null }; 
+            }
+    
+            try {
+                topcoderRes = await axios.get(`http://lb-project-463274464.us-east-1.elb.amazonaws.com:8002/users/${handle}`);
+            } catch (topcoderError) {
+                topcoderRes = { data: null }; 
+            }
+    
             console.log("AtCoder Response:", atcoderRes.data);
             console.log("Codeforces Response:", codeforcesRes.data);
             console.log("TopCoder Response:", topcoderRes.data);
-
+    
             setResults({
-                atcoder: atcoderRes.data || null,
-                codeforces: codeforcesRes.data.user || null,
-                topcoder: topcoderRes.data.users || null
+                atcoder: atcoderRes.data,
+                codeforces: codeforcesRes.data?.user,
+                topcoder: topcoderRes.data?.users
             });
         } catch (error) {
             Swal.fire("Error", "Hubo un problema al buscar el usuario", "error");
             console.error("Error al buscar el usuario:", error);
         }
     };
+    
+    
 
     const handleChange = (e) => {
         setHandle(e.target.value);
@@ -144,9 +160,9 @@ const Container = styled.div`
     height: 100vh; 
     margin-top: 20px;
     margin-left: 50px;
+    margin-right: 50px;
 `;
 
 const Card = styled.div`
     margin-bottom: 20px;
-    margin-right: 50px;
 `;

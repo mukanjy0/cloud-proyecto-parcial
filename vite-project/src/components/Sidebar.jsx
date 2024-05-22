@@ -55,9 +55,19 @@ const linksArray=[
         to : "/Atcoder"
     },
     {
+        label: "Submission ATCoder",
+        icon: <GoFileSubmodule />,
+        to: "/SubmissionA"
+    },
+    {
         label: "Codeforces",
         icon: <SiCodeforces/>,
         to : "/Codeforces"
+    },
+    {
+        label: "Submission Codeforces",
+        icon: <GoFileSubmodule />,
+        to: "/SubmissionC"
     },
     {
         label: "Topcoder",
@@ -65,16 +75,20 @@ const linksArray=[
         to : "/Topcoder"
     },
     {
+        label: "Submission Topcoder",
+        icon: <GoFileSubmodule />,
+        to: "/SubmissionT"
+    },
+    {
         label: "Search",
         icon: <FaSearch/>,
         to: "/Search"
     },
     {
-        label: "Submission",
-        icon: <GoFileSubmodule />,
-        to: "/Submission"
+        label: "SearchSubmission",
+        icon: <FaSearch/>,
+        to: "/SearchSubmission"
     }
-
 ]
 
 
